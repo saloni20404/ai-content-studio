@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id               String    @id @default(cuid())
+  clerkId          String    @unique
+  email            String    @unique
+  name             String?
+  plan             Plan      @default(FREE)
+  tokensUsed       Int       @default(0)
+  tokensLimit      Int       @default(5000)
+  stripeCustomerId String?   @unique
+  stripeSubId      String?   @unique
+  createdAt        DateTime  @default(now())
+  contents         Content[]
+  folders          Folder[]
+}
+
+model Folder {
+  id        String    @id @default(cuid())
+  userId    String
+  name      String
+  createdAt DateTime  @default(now())
+  contents  Content[]
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Content {
+  id          String      @id @default(cuid())
+  userId      String
+  folderId    String?
+  title       String
+  body        String
+  contentType ContentType
+  tone        String?
+  tags        String
+  isPublished Boolean     @default(false)
+  publicSlug  String?     @unique
+  tokensUsed  Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  folder      Folder?     @relation(fields: [folderId], references: [id])
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([folderId])
+}
+
+enum Plan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum ContentType {
+  BLOG_POST
+  LINKEDIN
+  TWITTER_THREAD
+  EMAIL
+  PRODUCT_DESC
+}
