@@ -25,14 +25,16 @@ export default function Home() {
             </a>
           </nav>
           <div className="flex gap-4">
-            <Link href="/sign-in" className="text-foreground hover:text-accent transition-colors">
+           <Link href="/sign-in">
+            <button className="px-4 py-2 rounded-lg border border-accent text-accent hover:bg-accent/10 transition-colors font-medium">
               Sign In
-            </Link>
-            <Link href="/sign-up">
-              <button className="px-4 py-2 rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 transition-colors font-medium">
-                Sign Up
-              </button>
-            </Link>
+            </button>
+          </Link>
+          <Link href="/sign-up">
+            <button className="px-4 py-2 rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 transition-colors font-medium">
+              Sign Up
+            </button>
+          </Link>
           </div>
         </div>
       </header>
