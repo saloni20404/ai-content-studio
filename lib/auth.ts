@@ -4,6 +4,8 @@ import { prisma } from './prisma'
 export async function getCurrentUser() {
   const { userId: clerkId } = await auth()
   
+  console.log('getCurrentUser - clerkId:', clerkId)
+  
   if (!clerkId) {
     return null
   }
@@ -11,6 +13,8 @@ export async function getCurrentUser() {
   const user = await prisma.user.findUnique({
     where: { clerkId },
   })
+
+  console.log('getCurrentUser - user found:', !!user)
 
   return user
 }
